@@ -37,8 +37,14 @@ export default {
   name: 'IndividualListed',
   props: {
     msg: String
-  }
+  }, 
+
+    created : function() {
+      //Query document ID from listing from this listing_id to populate fields above
+      console.log(this.$route.params.listing_id);
+    }
 }
+
 </script>
 <style scoped>
 #scrolly {

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <header>
-      <h1>{{ msg }}</h1>
-      <router-link to="/" exact>Home </router-link>
-      <router-link to="/listing" exact>Car Listing</router-link>
-      <router-link to="/listed" exact>Listed</router-link>
-      <router-link to="/login" exact>Log In</router-link>
-      <router-link to="/signup" exact>Sign up</router-link>
-      <router-link to="/CarListing" exact>View Available Cars </router-link>
-      <router-link to="/updateProfile" exact>Update Profile</router-link>
-      <router-link to="/profilePage" exact>Profile Page</router-link>
-      <router-link to="/reviewForm" exact>Leave Review</router-link>
-      <router-link to="/chat" exact>Chats</router-link>
-    </header>
+    <div>
+      <b-navbar toggleable = "lg" type = "light" variant = "primary" class = "navbarCol">  
+        <b-navbar-brand  class="d-inline-block align-top" href = "/"><img src = "../assets/GoGrab_Logo_transparent.png" style = "width:50px; height:50px"/> </b-navbar-brand>
+        <b-navbar-nav class = "ml-auto"> 
+          <b-nav-item class = "routerLinks" to = "/login" type = "dark">Login/Sign up</b-nav-item>  
+          <b-nav-item class = "routerLinks" to = "/"  type = "dark"> Messages (TBD) </b-nav-item>
+          <b-nav-item class = "routerLinks" to = "/CarListing"  type = "dark"> Cars </b-nav-item>
+          <b-nav-item class = "routerLinks" to = "/"  type = "dark"> Feed (TBD) </b-nav-item>
+          <b-nav-item class = "routerLinks" to = "/listing"  type = "dark"> List your car </b-nav-item>
+          <b-navbar-brand class = "d-inline-block align-top" href = "/login"><img src = "../assets/profile_icon.png" style = "width:50px; height:50px"> </b-navbar-brand>
+        </b-navbar-nav>
+      </b-navbar>
+    </div>
   </div>
 </template>
 
@@ -29,24 +29,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-header {
-  background: rgb(97, 19, 150);
-  height: 60px;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  text-align: center;
-  vertical-align: bottom;
-}
-h1 {
-  color: ivory;
-}
-a {
-  color: #fff;
-  text-decoration: none;
-  padding: 6px 8px;
-  border-radius: 10px;
-}
-.router-link-active {
-  background: #eee;
-  color: #444;
+.navbarCol {
+  font-size: 20px;
+  background-color:#DED3FF !important;
+} 
+
+.routerLinks {
+  padding: 0px;
+  margin: 10px;
 }
 </style>

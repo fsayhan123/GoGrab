@@ -2,7 +2,7 @@
   <div>
     <div id="profilePicture">profilePicture</div>
     <div id="stats">
-      <p class="stat">Reviews:</p>
+      <p class="stat">Reviews: {{this.numReviews}}</p>
     </div>
   </div>
 </template>
@@ -11,11 +11,15 @@
 <script>
 import firebase from "firebase";
 export default {
+  created () {
+    this.reviewCount();
+  },
   data() {
     return {
       username: "",
       password: "",
       email: "",
+      numReviews: 0
     };
   },
   methods: {
@@ -34,6 +38,14 @@ export default {
           alert(error.message);
         });
     },
+    reviewCount: function() {
+      const user = firebase.auth().currentUser;
+
+      firebase.firestore().collection("reviews").where("reviewerID", "==", user.uid).get().then((snapshot) => {
+        this.numReviews = snapshot.size;
+      })
+    }
+
   },
 };
 </script>

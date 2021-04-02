@@ -2,74 +2,98 @@
   <div id="app">
     <h1>Build trust among the GoGrab community!</h1>
     <h1>Leave a review today!</h1>
-    <br /><br /><br />
-    <form action="/action_page.php">
-      <ul>
-        <li>
-          <h2>Review:</h2>
-          <StarRating v-model="rating"></StarRating>
-          <h3>Rating selected: {{ rating }}</h3>
-          <br />
-          <label id="desc" for="description"></label><br />
-          <textarea id="description" name="description" rows="4" cols="50">
-          </textarea>
-          <br /><br />
-        </li>
 
-        <form>
-          <input type="submit" id="submit" v-on:click="addReview"/>
-        </form>
-      </ul>
-    </form>
+    <br /><br /><br />
+    <button class="button" v-on:click="goBack()">Back</button>
+    <ul>
+      <form>
+        <h1>Review:</h1>
+        <StarRating v-model="reviewData.reviewValue"> </StarRating>
+        <h3>Rating selected: {{ reviewData.reviewValue }}/5</h3>
+        <label for="reviewText"></label>
+        <br />
+        <textarea
+          id="reviewText"
+          placeholder="Enter your review description here"
+          name="reviewText"
+          v-model="reviewData.reviewText"
+          rows="7"
+          cols="50"
+        >
+        </textarea>
+      </form>
+    </ul>
+    <br><br><br>
+    <button class="button"  v-on:click="addReview()">Submit</button>
+      <!-- <button v-on:click="checkUID()">CHECK</button> -->
   </div>
 </template>
 
 <script>
+import firebase from "firebase";
 import { StarRating } from "vue-rate-it";
-import firebase from 'firebase';
 
 export default {
   data() {
     return {
-      rating: 0,
+      reviewData: {
+        reviewerID:"",
+        reviewValue: 0,
+        reviewText: "",
+        listingID: this.listingID
+      },
     };
   },
-  name: "reviewForm",
-  props: {},
+  props: {
+    listingID: String
+  },
   components: {
     StarRating,
   },
   methods: {
     addReview: function () {
-      console.log("rating is: " + this.rating);
-      console.log(
-        "description is: " + document.getElementById("description").value
-      );
-      // const ratingNumber = this.rating;
-      // const text = document.getElementById('description').value;
-       const newReview = firebase.firestore().collection("reviews").doc();
-      console.log(newReview.id);
-       firebase.firestore().collection("reviews").doc(newReview.id).set({
-          ratingNum: 2,
-          description: "hello123"
-      }).then(function() {
-         console.log("Doc successful");
-     })
-     .catch(function(error) {
-        console.error("Error writing doc", error);
-     }); 
+      console.log("start addReview");
+      const user = firebase.auth().currentUser;
+      this.reviewData.reviewerID = user.uid;
+      firebase
+        .firestore()
+        .collection("reviews")
+        .add(this.reviewData)
+        .then(() => {
+          alert("Review submitted!");
+          //this.$router.push("/listed");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+      console.log("after addReview");
+
       
-    }, 
-  }, 
+      const listingRef = firebase.firestore().collection("listings").doc(this.listingID);
+      listingRef.update({
+        reviewerID: user.uid
+      }).then(() => {
+        console.log("listing document successfully updated");
+      }).catch((error) => {
+        console.log("Error: " + error);
+      })
+      this.$router.push("/myRentals");
+
+    },
+    checkUID: function() {
+      const user = firebase.auth().currentUser;
+      console.log(user.uid);
+      console.log("listingID: " + this.listingID);
+    },
+    goBack: function() {
+          this.$router.push("/myRentals");
+    }
+  },
 };
 </script>
 
 <style>
 ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
   margin: 0 10px;
   text-align: left;
   margin-left: 20%;
@@ -77,8 +101,8 @@ li {
   margin-bottom: 10px;
 }
 /*button */
-#submit {
-  background-color: #c88ad8;
+.button {
+  background-color: indigo;
   border: none;
   color: white;
   padding: 16px 32px;
@@ -89,7 +113,8 @@ li {
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 
-#description {
+#reviewText {
   font-size: 25px;
+  border: 5px solid indigo
 }
 </style>

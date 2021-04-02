@@ -81,22 +81,28 @@ import firebase from 'firebase'
         age:'',
         defect:'', //boolean
         price: '',
-        afrom:'',
-        ato:'',
         location:'',
         description:'',
         rules:'',
         images:[],
+        renterID: '',
+        afrom: Date.now(),
+        ato: Date.now(),
 
-      }
-      
+      },
+    
     }
   },
   methods: {
     list : function() {
       //testing
-      console.log("abt to insert");
+      console.log("abt to insert now");
       //add to collection
+      console.log("afrom TEST is: " + this.listing.afrom);
+      console.log("ato TEST is: " + this.listing.ato);
+      // var dateFrom2 = new Date(document.getElementById("dateFrom").value);
+      // var dateTo2 = new Date(document.getElementById("dateTo").value);
+
       firebase.firestore().collection("listings")
       .add(this.listing)
       .then(() => {

@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <div> <img id = "carImage" v-bind:src = "rental['Image']" /> </div>
-        <p id="NameRating"> <strong>{{rental['Name']}}</strong> <br> {{rental['Rating']}} </p> <br><br>
-        <p id="Price">${{rental['Price']}} SGD/Day</p>
+    <div v-bind:doc_id = "rental[0]" v-on:click = "moveIndividual($event)">
+        <div v-bind:doc_id = "rental[0]" > <img id = "carImage" v-bind:doc_id = "rental[0]" v-bind:src = "rental[1]['Image']" /> </div>
+        <p id="NameRating" v-bind:doc_id = "rental[0]" > <strong v-bind:doc_id = "rental[0]" >{{rental[1]['Name']}}</strong> <br> {{rental[1]['Rating']}} </p> <br><br>
+        <p id="Price" v-bind:doc_id = "rental[0]" >${{rental[1]['Price']}} SGD/Day</p>
     </div>
 </template>
 
@@ -13,8 +13,15 @@ export default {
         }
     },
     props : {
-        rental : Object,
-    }
+        rental : Array,
+    },
+
+    methods : {
+        moveIndividual : function(event) {
+            const listing_id = event.target.getAttribute("doc_id");
+            this.$router.push({name: 'IndividualListed',  params: { listing_id: listing_id }})
+        }
+     }
 }
 </script>
 

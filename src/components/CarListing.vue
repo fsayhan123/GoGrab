@@ -4,25 +4,14 @@
             <input  type="search" placeholder="Search.." />
             <button> Search </button> 
         </div>
-        <div id = "filter">
-            <span>Sort By:</span>
-            <ul id = "filterChoice">
-                <li><select>
-                    <option value = ""> Price </option>    
-                </select> </li>
-                <li><select>
-                    <option value = ""> Brand </option>
-                </select> </li>
-                <li><select> 
-                    <option value = ""> Trips </option>
-                   </select> </li>
-                <li><button>Apply Filter</button> </li>
-            </ul>
-        </div>
+        
+        
+
+
         <div id = "carDisplay"> 
             <b-container class="bv-example-row" >
                 <b-row v-for = "(chunk,index) in chunkedCarArray" :key = "index">
-                    <b-col v-for="(carData,index) in chunk" :key="index"><car-list-icon v-bind:rental="carData"></car-list-icon></b-col>
+                    <b-col sm = '4' v-for="(carData,index) in chunk" :key="index"><car-list-icon v-bind:rental="carData"></car-list-icon></b-col>
                 </b-row>
             </b-container>
         </div>
@@ -47,7 +36,7 @@ export default {
             database.collection('rentals').get().then(snapshot => {
                 var temp = [];
                 snapshot.docs.forEach(doc => {
-                    temp.push(doc.data());
+                    temp.push([doc.id, doc.data()]);
                     if (temp.length == 3) {
                         this.chunkedCarArray.push(temp);
                         temp = [];
@@ -57,6 +46,9 @@ export default {
                     this.chunkedCarArray.push(temp);
                 }
             })
+        },
+        checkChunked : function () {
+            console.log(this.chunkedCarArray[0][0])
         }
     },
 
